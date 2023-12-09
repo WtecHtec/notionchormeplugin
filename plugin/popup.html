@@ -6,26 +6,44 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Popup</title>
 	<style>
-		.herz-m-from {
-			display: flex;
-			align-items: center;
+		.button {
+			display: inline-block;
+			background-color: #007BFF;
+			color: white;
+			padding: 8px 16px;
+			font-size: 16px;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			text-decoration: none;
+			transition: background-color 0.3s, box-shadow 0.3s;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 		}
 
-		.herz-input {
-			vertical-align: middle;
+		.button:hover {
+			background-color: #0056B3;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+		}
+
+		.button:active {
+			background-color: #004085;
+			box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+		}
+
+		.mini-button {
+			padding: 4px 8px;
+			font-size: 12px;
 		}
 	</style>
 </head>
 
 <body>
 	<div style="width: 240px;">
-		<h1>这是一个临时交互</h1>
-		<div class="herz-m-from">
-			<h6>显示</h6>
-			<input id="status" class="herz-input" type="checkbox" value="1" />
-		</div>
+		<h3>欢迎使用NNote笔记</h3>
+		<div class="button" id="authbt"> 前往授权</div>
 	</div>
 	<script src="./js/jquery-3.6.js"></script>
+	<script src="./popup.js"></script>
 </body>
 
 </html>
