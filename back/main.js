@@ -17,6 +17,29 @@ const app = express()
 app.use(cors())
 app.use(bodyParser.json());
 
+function isObject(obj) {
+	var type = typeof obj;
+	return type === 'function' || type === 'object' && !!obj;
+}
+
+function getMutliLevelProperty(ctx, path, defaultVal) {
+	let res = defaultVal;
+	if (!typeof path === 'string' || !isObject(ctx)) return res;
+	let key = path.replace(/\[(\w+)\]/g, '.$1');
+	key = key.replace(/^\./, '');
+	const arr = key.split('.');
+	for (let i = 0, count = arr.length; i < count; i++) {
+		const p = arr[i];
+		if ((isObject(ctx) || Array.isArray(ctx)) && p in ctx) {
+			ctx = ctx[p];
+		} else {
+			return res;
+		}
+	}
+	res = ctx;
+	return res;
+}
+
 /** 获取auth token */
 async function getAuthToken(code) {
 	const response = await axios.post("https://api.notion.com/v1/oauth/token", {
@@ -40,7 +63,10 @@ app.get('/auth', async (req, res) => {
 	try {
 		const response = await getAuthToken(params.code)
 		console.log(response.data)
-		res.setHeader('Set-Cookie', [`access_token=${response.data.access_token}`, `duplicated_template_id=${response.data.duplicated_template_id}`])
+    const access_token = getMutliLevelProperty(response, 'data.access_token', '')
+    const duplicated_template_id = getMutliLevelProperty(response, 'data.duplicated_template_id', '')
+    const name = getMutliLevelProperty(response, 'data.owner.user.name', '')
+		res.setHeader('Set-Cookie', [`access_token=${access_token }`, `duplicated_template_id=${duplicated_template_id}`, `notion_name=${name}`])
 		res.redirect('/notion/authorizationsuccessful')
 	} catch (error) {
 		console.log(error)

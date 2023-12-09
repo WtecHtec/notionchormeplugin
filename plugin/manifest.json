@@ -39,7 +39,8 @@
 	"permissions": [
 		"tabs",
 		"contextMenus",
-		"cookies"
+		"cookies",
+    "storage"
 	],
 	"web_accessible_resources": [
 		{
